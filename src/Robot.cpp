@@ -6,7 +6,7 @@
 #include <LiveWindow/LiveWindow.h>
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
-#include <Lib830.h>
+#include "Lib830.h"
 #include "input/GamepadF310.h"
 
 
@@ -17,7 +17,7 @@ public:
 	enum is a user defined type (in this case an AutonMode), 
 	that can only have a specific set of values 
 	*/
-	enum AutonMode {/* add enum values here */}
+	enum AutonMode { /* add enum values here */};
 
 private:
 		
@@ -43,21 +43,21 @@ private:
 		to the actual 'value' of drive, used so we can call functions on the object, not copies
 		of it
 		*/
-		Robotdrive *drive;
+		RobotDrive *drive;
 
 		/*
 		Now we need to create controller objects, we use the class GamepadF310 for these,
 		and typically name them pilot and copilot, for this we will only need a pilot
 		*/
 		
-		GamepadF310 * pilot;
+		Lib830::GamepadF310 * pilot;
 
 		SendableChooser<AutonMode*> *chooser;
 
 		Timer *timer;
 
 		CameraServer *server;
-		cs::USBCamera *camera;
+		cs::UsbCamera camera;
 
 
 	void RobotInit() {
@@ -81,7 +81,7 @@ private:
 			new VictorSP(/*name*/)
 		);
 
-		pilot = new GamepadF310(0);
+		pilot = new Lib830::GamepadF310(0);
 
 		chooser = new SendableChooser<AutonMode*>();
 		chooser->AddDefault("", new AutonMode(/*enum value*/));
@@ -105,7 +105,7 @@ private:
 
 	void AutonomousPeriodic() {
 		
-		AutoMode mode = *chooser->GetSelected();
+		AutonMode mode = *chooser->GetSelected();
 
 		float time = timer->Get();
 		float speed = 0.0;
@@ -157,7 +157,6 @@ private:
 	}
 
 	void TestPeriodic() {
-		lw->Run();
 	}
 
 
