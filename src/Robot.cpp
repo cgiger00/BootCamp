@@ -56,6 +56,9 @@ private:
 
 		Timer *timer;
 
+		CameraServer *server;
+		cs::USBCamera *camera;
+
 
 	void RobotInit() {
 
@@ -81,11 +84,13 @@ private:
 		pilot = new GamepadF310(0);
 
 		chooser = new SendableChooser<AutonMode*>();
-		chooser->AddDefault("", new AutonMode(/*enum value*/))
-		chooser->AddObject("", new AutonMode(/*enum value*/))
+		chooser->AddDefault("", new AutonMode(/*enum value*/));
+		chooser->AddObject("", new AutonMode(/*enum value*/));
 		SmartDashboard::PutData("Auton Modes", chooser);
 
 		timer = new Timer();
+		server = CameraServer::GetInstance();
+		camera = server->StartAutomaticCapture();
 	}
 
 	/* 
@@ -133,7 +138,7 @@ private:
 		In order to get this value, you must reference the Gamepad object you made (called pilot),
 		and call either the LeftY() or RightY() method
 		*/
-		float speed = /*pilot-> LeftY() OR pilot->RightY()*/;
+		float speed = /*pilot-> LeftY() OR pilot->RightY() OR idk whatever you guys want, you can be creative*/;
 		/*
 		the turn value is acquired in a similar fashion, but instead of Left/Right Y, use
 		LeftX() or RightX()
